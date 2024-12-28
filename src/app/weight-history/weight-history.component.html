@@ -1,0 +1,11 @@
+<button (click)="sortByDate()">Sort by date</button>
+<button (click)="sortByWeight()">Sort by weight</button>
+@for (trackedWeight of trackedWeights; track trackedWeight.id) {
+<section class="tracked-weight">
+    <p>{{ trackedWeight.weight | number: "2.2-2" }}kg - {{ trackedWeight.trackedAt | date: "dd-MMM" }}</p>
+    <section class="options">
+        <button (click)="handleEdit(trackedWeight.id)">Edit</button>
+        <button (click)="handleDelete(trackedWeight.id)">Delete</button>
+    </section>
+</section>
+}

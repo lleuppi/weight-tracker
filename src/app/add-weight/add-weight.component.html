@@ -1,0 +1,26 @@
+<form [formGroup]="addWeightForm" (ngSubmit)="handleSubmit()">
+    <label for="weight">
+        Weight in kg
+        <input id="weight" type="number" formControlName="weight">
+    </label>
+    <br>
+    <label for="trackedAt">
+        Date
+        <input id="trackedAt" type="date" formControlName="trackedAt" min="2024-01-01" max="{{ this.currentDate }}">
+    </label>
+    <br>
+    @if (!addWeightForm.valid) {
+        <ul>
+            <li>
+                <span style="color: red;">Weight must be a valid number</span>
+            </li>
+            <li>
+                <span style="color: red;">Weight must be in range of 0kg to 100kg</span>
+            </li>
+        </ul>
+        }
+    <br>
+    <input type="submit" value="Add weight" [disabled]="!addWeightForm.valid">
+</form>
+<br>
+<a routerLink="/">Cancel</a>

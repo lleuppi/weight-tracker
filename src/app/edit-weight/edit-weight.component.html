@@ -1,0 +1,26 @@
+<form [formGroup]="editWeightForm" (ngSubmit)="handleSubmit()">
+    <label for="weight">
+        Weight in kg
+        <input id="weight" type="number" formControlName="weight">
+    </label>
+    <br>
+    <label>
+        Date
+        <input type="date" [value]="date" disabled>
+    </label>
+    <br>
+    @if (!editWeightForm.valid) {
+        <ul>
+            <li>
+                <span style="color: red;">Weight must be a valid number</span>
+            </li>
+            <li>
+                <span style="color: red;">Weight must be in range of 0kg to 100kg</span>
+            </li>
+        </ul>
+        }
+    <br>
+    <input type="submit" value="Update" [disabled]="!editWeightForm.valid">
+</form>
+<br>
+<a routerLink="/">Cancel</a>
