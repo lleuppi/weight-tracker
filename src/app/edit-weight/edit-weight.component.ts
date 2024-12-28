@@ -6,7 +6,7 @@ import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-edit-weight',
-  imports: [RouterLink, ReactiveFormsModule, DatePipe],
+  imports: [RouterLink, ReactiveFormsModule],
   templateUrl: './edit-weight.component.html',
   styleUrl: './edit-weight.component.css'
 })
