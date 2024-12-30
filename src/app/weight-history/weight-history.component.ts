@@ -3,6 +3,8 @@ import { DatePipe, DecimalPipe } from '@angular/common';
 import { TrackedWeight } from '../../types/TrackedWeight';
 import { WeightTrackingStore } from '../services/WeightTrackingStore'
 import { Router } from '@angular/router';
+import { neon } from '@neondatabase/serverless';
+import { AuthService, User } from '@auth0/auth0-angular';
 
 @Component({
   selector: 'app-weight-history',
@@ -12,6 +14,8 @@ import { Router } from '@angular/router';
 })
 export class WeightHistoryComponent {
   trackedWeights: TrackedWeight[] = [];
+  isAuthenticated: boolean = false;
+  user: User = null!;
 
   #listTrackedWeights() {
     this.weightTrackingStore
@@ -19,8 +23,42 @@ export class WeightHistoryComponent {
       .subscribe((trackedWeights) => this.trackedWeights = trackedWeights);
   }
 
-  constructor(private weightTrackingStore: WeightTrackingStore, private router: Router) {
+  constructor(private weightTrackingStore: WeightTrackingStore, private router: Router, private auth: AuthService) {
+    auth.isAuthenticated$
+      .subscribe(isAuthenticated => {
+        this.isAuthenticated = isAuthenticated
+        if (this.isAuthenticated) {
+          auth.getAccessTokenSilently().subscribe(accessToken => {
+            this.authtest(accessToken);
+          });
+          auth.user$.subscribe(user => {
+            if (user != null) {
+              this.user = user;
+            }
+          });
+        }
+      });
     this.#listTrackedWeights();
+  }
+
+  login() {
+    this.auth.loginWithRedirect();
+  }
+
+  logout() {
+    this.auth.logout();
+  }
+
+  authtest(accessToken: string) {
+    let db_authenticated_url = 'postgresql://authenticated@ep-shy-river-a2phnrvi.eu-central-1.aws.neon.tech/neondb?sslmode=require'
+    const sql = neon(db_authenticated_url, {
+      authToken: accessToken
+    });
+
+    console.log('Requesting')
+    sql('select * from mytable').then(response => {
+      console.log(response)
+    });
   }
 
   handleEdit(id: number) {
@@ -61,4 +99,8 @@ export class WeightHistoryComponent {
       .delete(id)
       .subscribe(() => this.#listTrackedWeights());
   }
+}
+class tabletan {
+  id: number = 0;
+  column_1: string = ''
 }

@@ -1,17 +1,24 @@
+@if (!isAuthenticated) {
+<button (click)="login()">Sign in</button>
+}
+@else {
+<!-- <img src="{{ user.picture }}" alt="Profile picture" width="50" height="50"> -->
+<button (click)="logout()">Sign out</button>
+}
 <button (click)="sortByDate()">Sort by date</button>
 <button (click)="sortByWeight()">Sort by weight</button>
 @if (trackedWeights.length > 0) {
-    @for (trackedWeight of trackedWeights; track trackedWeight.id) {
-        <section class="tracked-weight">
-            <p>{{ trackedWeight.weight | number: "2.2-2" }}kg - {{ trackedWeight.trackedAt | date: "dd-MMM" }}</p>
-            <section class="options">
-                <button (click)="handleEdit(trackedWeight.id)">Edit</button>
-                <button (click)="handleDelete(trackedWeight.id)">Delete</button>
-            </section>
-        </section>
-        }
+@for (trackedWeight of trackedWeights; track trackedWeight.id) {
+<section class="tracked-weight">
+    <p>{{ trackedWeight.weight | number: "2.2-2" }}kg - {{ trackedWeight.trackedAt | date: "dd-MMM" }}</p>
+    <section class="options">
+        <button (click)="handleEdit(trackedWeight.id)">Edit</button>
+        <button (click)="handleDelete(trackedWeight.id)">Delete</button>
+    </section>
+</section>
+}
 }
 @else {
-    <br>
+<br>
 <span>Nothing here...</span>
 }
