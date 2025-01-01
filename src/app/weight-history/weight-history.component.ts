@@ -29,7 +29,7 @@ export class WeightHistoryComponent {
         this.isAuthenticated = isAuthenticated
         if (this.isAuthenticated) {
           auth.getAccessTokenSilently().subscribe(accessToken => {
-            this.authtest(accessToken);
+            // this.authtest(accessToken);
           });
           auth.user$.subscribe(user => {
             if (user != null) {

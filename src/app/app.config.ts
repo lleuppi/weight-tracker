@@ -1,9 +1,10 @@
-import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
+import { ApplicationConfig, provideZoneChangeDetection, isDevMode } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { provideAuth0 } from '@auth0/auth0-angular';
 
 import { routes } from './app.routes';
 import { RequireAuthentication } from './auth/RequireAuthentication';
+import { provideServiceWorker } from '@angular/service-worker';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -17,6 +18,9 @@ export const appConfig: ApplicationConfig = {
         audience: 'https://dev-yy0af44mmmff05v3.eu.auth0.com/api/v2/'
       }
     }),
-    RequireAuthentication
+    RequireAuthentication, provideServiceWorker('ngsw-worker.js', {
+            enabled: !isDevMode(),
+            registrationStrategy: 'registerWhenStable:30000'
+          })
   ]
 };
